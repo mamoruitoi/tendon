@@ -30,7 +30,7 @@
                                     <strong>{{ text.text.content }}</strong>
                                 </template>
                                 <template v-else>
-                                    <u>[__________]</u>
+                                    <u>[＿＿＿]</u>
                                 </template>
                             </span>
                             <span v-else>
