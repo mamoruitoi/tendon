@@ -1,55 +1,56 @@
 <template>
     <div class="container mt-4">
         <div v-if="loading">読み込み中です...</div>
-        <!--ログイン画面-->
-        <div v-if="!authenticated" class="text-center">
-            <input v-model="passwordInput" type="password" class="form-control mb-2" placeholder="パスワードを入力" />
-            <button @click="authenticate" class="btn btn-primary">ログイン</button>
-        </div>
-
-        <!--ログイン済み-->
         <div v-else>
-            
-            <!--単元選択画面-->
-            <div v-if="!selectedUnit && !loading">
-                <h4>単元を選択してください</h4>
-                <button v-for="unit in Object.keys(unitToPageId)" :key="unit" class="btn btn-outline-secondary m-1" @click="selectUnit(unit)">
-                    {{ unit }}
-                </button>
+            <!--ログイン画面-->
+            <div v-if="!authenticated" class="text-center">
+                <input v-model="passwordInput" type="password" class="form-control mb-2" placeholder="パスワードを入力" />
+                <button @click="authenticate" class="btn btn-primary">ログイン</button>
             </div>
 
-            <!--クイズ画面-->
+            <!--ログイン済み-->
             <div v-else>
-                <!--問題が存在するならば-->
-                <div v-if="questions.length && currentQuestion">
-                    <div class="question">
-                    <p>
-                        <span v-for="(text, i) in currentQuestion.paragraph.rich_text" :key="i">
-                            <span v-if="text.annotations.bold" class="cloze" @click="toggleCloze(i)">
-                                <template v-if="clozeState[i]">
-                                    <strong>{{ text.text.content }}</strong>
-                                </template>
-                                <template v-else>
-                                    <u>[＿＿＿]</u>
-                                </template>
+                
+                <!--単元選択画面-->
+                <div v-if="!selectedUnit && !loading">
+                    <h4>単元を選択してください</h4>
+                    <button v-for="unit in Object.keys(unitToPageId)" :key="unit" class="btn btn-outline-secondary m-1" @click="selectUnit(unit)">
+                        {{ unit }}
+                    </button>
+                </div>
+
+                <!--クイズ画面-->
+                <div v-else>
+                    <!--問題が存在するならば-->
+                    <div v-if="questions.length && currentQuestion">
+                        <div class="question">
+                        <p>
+                            <span v-for="(text, i) in currentQuestion.paragraph.rich_text" :key="i">
+                                <span v-if="text.annotations.bold" class="cloze" @click="toggleCloze(i)">
+                                    <template v-if="clozeState[i]">
+                                        <strong>{{ text.text.content }}</strong>
+                                    </template>
+                                    <template v-else>
+                                        <strong class="hidden">{{ text.text.content }}</strong>
+                                    </template>
+                                </span>
+                                <span v-else>
+                                    {{ text.text.content }}
+                                </span>
                             </span>
-                            <span v-else>
-                                {{ text.text.content }}
-                            </span>
-                        </span>
-                    </p>
-                    </div>
-                    <!--ナビゲーションバー-->
-                    <div class="navigation">
-                        <button @click="prev" :disabled="currentIndex === 0">戻る</button>
-                        <button @click="next" :disabled="currentIndex === questions.length - 1">進む</button>
-                        <button @click="fetchUnits">一覧に戻る</button>
+                        </p>
+                        </div>
+                        <!--ナビゲーションバー-->
+                        <div class="navigation">
+                            <button @click="prev" :disabled="currentIndex === 0" class="btn btn-outline-primary">戻る</button>
+                            <button @click="next" :disabled="currentIndex === questions.length - 1" class="btn btn-outline-primary">進む</button>
+                            <button @click="fetchUnits" class="btn btn-outline-secondary">一覧に戻る</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-
     </div>
 </template>
 
@@ -216,6 +217,9 @@ function prev() {
 }
 .cloze:hover {
   background-color: #e0e0e0;
+}
+.hidden {
+    opacity: 0;
 }
 .navigation {
   margin-top: 16px;
