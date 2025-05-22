@@ -4,4 +4,10 @@ module.exports = defineConfig({
   outputDir: 'docs',
   assetsDir: './',
   publicPath: './',
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      title: 'てんどん',
+    }
+  }
 })
